@@ -7,6 +7,12 @@
 * Include people that are 50
 * that are from either Japan or Australia
 */
+SELECT
+    *
+FROM customers
+WHERE age < 30 OR age >= 50
+AND income > 50000
+AND country IN ('Japan', 'Australia');
 
 /*
 * DB: Store
@@ -14,3 +20,8 @@
 * Question: 
 * What was our total sales in June of 2004 for orders over 100 dollars?
 */
+SELECT
+    SUM(totalamount)
+FROM orders
+WHERE orderdate >= '2004-06-01' AND orderdate <= '2004-06-30'
+AND totalamount > 100;
