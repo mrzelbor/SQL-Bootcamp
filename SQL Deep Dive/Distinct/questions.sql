@@ -3,17 +3,18 @@
 * Table: titles
 * Question: What unique titles do we have?
 */
-
-SELECT * FROM titles;
-
+SELECT
+    DISTiNCT title
+FROM titles;
 
 /*
 * DB: Employees
 * Table: employees
 * Question: How many unique birth dates are there?
 */
-
-SELECT * FROM employees;
+SELECT
+    COUNT(DISTiNCT birth_date)
+FROM employees;
 
 /*
 * DB: World
@@ -23,4 +24,7 @@ SELECT * FROM employees;
 */
 
 SELECT * FROM country;
-
+SELECT
+    DISTINCT lifeexpectancy
+FROM country
+WHERE lifeexpectancy IS NOT NULL;
