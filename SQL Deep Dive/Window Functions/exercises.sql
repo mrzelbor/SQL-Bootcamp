@@ -3,8 +3,9 @@
 *  Database: World
 *  Table: Country
 */
-
-SELECT *
+SELECT
+    DISTINCT continent
+    ,SUM(population) OVER(PARTITION BY continent) AS "Total Population"
 FROM country;
 
 /*
@@ -16,10 +17,18 @@ FROM country;
 *  Database: World
 *  Table: Country
 */
-
-SELECT *
-FROM country;
-
+SELECT
+    DISTINCT continent
+    ,SUM(population) OVER W1 AS "Total Population"
+    ,CONCAT(
+    ROUND(
+    (
+    SUM(population::float) OVER W1 /
+    SUM(population::FLOAT) OVER()
+    ) * 100)
+    , '%') AS "Percentage of Population"
+FROM country
+WINDOW W1 AS (PARTITION BY continent);
 
 /*
 *  Count the number of towns per region
@@ -27,6 +36,12 @@ FROM country;
 *  Database: France
 *  Table: Regions (Join + Window function)
 */
-
-SELECT *
-FROM regions AS r;
+SELECT
+    DISTINCT r.id
+    ,r.name
+    ,COUNT(t.id) OVER W1 
+FROM regions AS r
+INNER JOIN departments AS d ON d.region = r.code
+INNER JOIN towns AS t ON t.department = d.code
+WINDOW W1 AS (PARTITION BY r.id)
+ORDER BY r.id;
